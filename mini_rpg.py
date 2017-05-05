@@ -8,6 +8,7 @@ n = 3; #number of dice
 d = 6; #numbers on dice
 result = 0;
 dice = 0;
+killcount = 0;
 
 attributes = ('Str', 'Agi', 'Con', 'Int', 'Wis', 'Cha', 'HP');
 
@@ -29,7 +30,7 @@ hero_attrib_values = (stats_roll(int), stats_roll(int), stats_roll(int), stats_r
 hero_attributes = dict(zip(attributes, hero_attrib_values)) 
 hero_attributes['HP'] = health(hero_attributes['Con'])
 
-def create_monster(dict):
+def create_monster(dict):			#creates a new monster
 	monster_attrib_values = (stats_roll(int), stats_roll(int), stats_roll(int), stats_roll(int), stats_roll(int), stats_roll(int))
 	monster_attributes = dict(zip(attributes, monster_attrib_values))
 	monster_attributes['HP'] = health(monster_attributes['Con'])
@@ -47,44 +48,51 @@ def damage_roll(int):				#determines amount of damage done.
 	result = int + random.randint(1, 6)
 	return result
 	
-def initiative(int):
+def initiative(int):					#determines who gets to strike first (NOT IMPLEMENTED)
 	result = random.randint(1,20)
 	return result
 
-def encounter():
+def encounter():	#starts the fighting loop until Hero HP < 1
 	monster_attributes = create_monster(dict)
-	print (monster_attributes.items())
-	print (hero_attributes.items())
-	while hero_attributes['HP']>0 or monster_attributes['HP']>0:
-		if attack_roll(hero_attributes['Str'], monster_attributes['Agi']) == True:
+	print ("The Hero Orc stats are: " + str(hero_attributes.items()))
+	print ("The Monster Elf stats are: " + str(monster_attributes.items()))
+	
+	while hero_attributes['HP'] > 0 or monster_attributes['HP'] > 0:	#keeps looping the fighting as long as either hero or monster has > 0 HP
+		
+		if attack_roll(hero_attributes['Str'], monster_attributes['Agi']) == True:	#checks if there is a hit
 			dmg = damage_roll(hero_attributes['Str'])
 			monster_attributes['HP'] -= dmg
-			print ("Monster was hit for " + str(dmg) + " damage and is down to " + str(monster_attributes['HP']) + " hitpoints!")
+			print ("Monster Elf was hit for " + str(dmg) + " damage and is down to " + str(monster_attributes['HP']) + " hitpoints!")
 		else:
-			print ("Hero missed!")
+			print ("Hero Orc missed!")
 		time.sleep(2)
 		if monster_attributes['HP'] < 1:
 			break
 		if attack_roll(monster_attributes['Str'], hero_attributes['Agi']) == True:
 			dmg = damage_roll(monster_attributes['Str'])
 			hero_attributes['HP'] -= dmg
-			print ("Hero was hit for " + str(dmg) + " damage and is down to " + str(hero_attributes['HP']) + " hitpoints!")
+			print ("Hero Orc was hit for " + str(dmg) + " damage and is down to " + str(hero_attributes['HP']) + " hitpoints!")
 		else:
-			print ("Monster missed!")
+			print ("Monster Elf missed!")
 		time.sleep(2)
 		if hero_attributes['HP'] < 1:
 			break
 
 	if monster_attributes['HP'] < hero_attributes['HP']:
-		print ("Hero has won")
+		print ("Hero Orc has won")
 		healing = 5 * random.randint(1, 10)
 		hero_attributes['HP'] += healing
-		if hero_attributes['HP'] > hero_attributes['Con'] * 5:
-			hero_attributes['HP'] = hero_attributes['Con'] * 5
-		print ("Hero consumed a healing potion and healed up for " + str(healing) + " points. Lets kill another monster!")
+		if hero_attributes['HP'] > hero_attributes['Con'] * 5:		#checks if healing would go over the Max HP allowed (5 * Con)
+			hero_attributes['HP'] = hero_attributes['Con'] * 5	#if healing goes over Max HP the HP is reduced to Max
+		print ("Hero Orc consumed a healing potion and healed up for " + str(healing) + " points. Lets kill another monster!")
 		time.sleep(2)
+		global killcount
+		killcount += 1		#keeps track of how many monsters slain.
 	else:
-		print ("Monster has won")
-	
+		print ("Monster Elf has won")
+		print ("Hero Orc killed " + str(killcount) + " Monster Elfs this time!")
+
 while hero_attributes['HP'] > 0:
-	encounter()
+	encounter()	
+	
+	

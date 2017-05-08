@@ -36,8 +36,8 @@ while i < 50:					#randomly draws new numbers until winning 50 times.
 		lottono = random.sample(range(1,35), 7)
 		lottono.sort()
 		win = compare(winner, lottono)
-		rows += 1
-		cost = rows*25 
+		rows += 5	#rows played each time lottery runs
+		cost = rows * 5 #Norwegian Crowns per row played 
 	
 	#writes results to file with comma seperation
 	#f = open('H:\Delete Me\lotto.txt', 'a')

@@ -3,39 +3,54 @@ from random import randrange
 import time as t
 
 #init
-yournumbers = 0;
-yournumbers = [7, 11, 13, 17, 23, 29, 31]
-winningnumber = 0;
 rows = 0;
 cost = 0;
-win = False
+win = False;
 i = 0;
+winner = [[], [], [], [], [], [], []]
 
-#runs the script 50 times.
-while i < 50:
+
+def lottonumbers(list):			#generates random lotto numbers
+	number = random.sample(range(1,35), 7)
+	number.sort()
+	return number
+
+def compare(win, lotto):			#compares the player numbers with the randomly generated number
+	n = 0;
+	for lst in win:
+		if lotto == win[n]:
+			return True
+		n += 1
+	return False
+
+#generates 5 random lotto numbers
+n = 0;
+for list in winner:
+	winner[n] = lottonumbers(dict)
+	n += 1
+
+while i < 50:					#randomly draws new numbers until winning 50 times.
 	start = t.time()
+	print ("These are the golden tickets: " + str(winner))
 	while not win:
-		#n = how many numbers to draw
-		n = 7; 
-		#generate random number
-		#yournumbers = random.sample(range(1,35),n) 
-		#generate random winning number
-		winningnumber = random.sample(range(1,35),n) 
-		#sorting number list for comparison
-		yournumbers.sort()
-		winningnumber.sort()
-		#compare winning number to your number
-		win = True if str(winningnumber) == str(yournumbers) else False
+		lottono = random.sample(range(1,35), 7)
+		lottono.sort()
+		win = compare(winner, lottono)
 		rows += 1
-		cost = rows*5 
+		cost = rows*25 
 	
-	f = open('H:\Delete Me\lotto.txt', 'a')
-	f.write("# of rows:" + str(rows) + ":" + "Cost:" + str(cost) + ":" + "Winning number was" + ":" + str(winningnumber) + '\n')
-	print("This time it cost: " + str(cost))
+	#writes results to file with comma seperation
+	#f = open('H:\Delete Me\lotto.txt', 'a')
+	#f.write("# of rows," + str(rows) + "," + "Cost," + str(cost) + "," + "Winning number was" + "," + str(winner) + '\n')
+	
+	print("This time it cost: " + str(cost)) #prints out total cost in NOK to achieve a lottery win
+	
+	#resets values for the next run of the loop
 	win = False;
 	rows = 0;
 	cost = 0;
 	i += 1
-	duration = float(t.time() - start)
+	duration = float(t.time() - start)		#prints time it took from start of loop until winning number was hit.
 	print("--- %.2f seconds ---" % duration) 
-f.close()
+	
+f.close()	#closes file after script ends

@@ -1,6 +1,19 @@
 # Hangman
-secret_word = "Banana"
-secret_word = secret_word.upper()
+import random
+
+def make_a_word(strng): #create a def or remove it again? revert strng to secret_word if removed.
+	word_File_path = '/Users/RogerMBA/PycharmProjects/Hangman/english3.txt'
+	f = open('english3.txt', 'r')
+	lines = f.readlines()
+	for index, line in enumerate(lines):
+		lines[index] = line.strip('\n')
+
+	strng = lines[random.randint(1, len(lines))]
+	strng = strng.upper()
+	print(strng)
+	return strng
+
+make_a_word(secret_word)
 reveal_word = ["_"] * len(secret_word)
 used_letter = []
 wrong_letter = []
